@@ -16,7 +16,7 @@ comparison. This work proposes an evaluation methodology for analysis and compar
 
 ## Experimental Setup
 
-****Model:**** This directory implements two models:
+****Model:**** This directory implements the model:
 * A Multi Layer Perceptron (MLP) used in the paper on MNIST. 
 This is the model used by default.
 
