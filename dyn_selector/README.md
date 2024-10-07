@@ -93,10 +93,6 @@ If you want to modify the `alpha` parameter used to create the LDA partitions, y
 python -m dyn_selector.dataset_preparation alpha=<alpha>
 ```
 
-
-
-In this case the generated datasets will be saved in the `cifar10` folder.
-
 ### Running simulations and reproducing results
 If you have not done it yet, [generate the clients' dataset](#generate-clients-dataset).
 
