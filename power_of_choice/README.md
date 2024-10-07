@@ -9,7 +9,7 @@ comparison. This work proposes an evaluation methodology for analysis and compar
 
 ## About the experiments
 
-****Datasets:**** MNIST, CIFAR10 from Keras
+****Datasets:**** MNIST, from Keras
 
 ****Hardware Setup:**** These experiments were run on a desktop machine with 10 CPU threads. Any machine with 4 CPU cores or more would be able to run it in a reasonable amount of time. Note: the entire experiment runs on CPU-only mode.
 
@@ -19,15 +19,12 @@ comparison. This work proposes an evaluation methodology for analysis and compar
 ****Model:**** This directory implements two models:
 * A Multi Layer Perceptron (MLP) used in the paper on MNIST. 
 This is the model used by default.
-* A CNN used in the paper on CIFAR10 dataset. To use this model you have to set is_cnn=True in the configuration file base.yaml.
 
-****Dataset:**** The experiments include two datasets: MINST (MNIST) and CIFAR10. Both are partitioned by default among 100 clients, creating imbalanced non-iid partitions using Latent Dirichlet Allocation (LDA) without resampling. All the clients have the same number of samples. Parameter `alpha` of the LDA can be set in the `base.yaml` or passed as argument, by default it is set to 2.
+****Dataset:**** The experiments include  dataset: MINST (MNIST) 0. which is partitioned by default among 100 clients, creating imbalanced non-iid partitions using Latent Dirichlet Allocation (LDA) without resampling. All the clients have the same number of samples. Parameter `alpha` of the LDA can be set in the `base.yaml` or passed as argument, by default it is set to 2.
 
 | Dataset | #classes | #partitions | partitioning method | partition settings |
 | :------ | :---: | :---: | :---: | :---: |
 | MNIST | 10 | 100 | Latent Dirichlet Allocation | All clients with same number of samples |
-| CIFAR10 | 10 | 100 | Latent Dirichlet Allocation | All clients with same number of samples |
-
 
 ****Training Hyperparameters:**** 
 | Hyperparameter | Description | Default Value |
@@ -94,14 +91,6 @@ If you want to modify the `alpha` parameter used to create the LDA partitions, y
 ```bash
 python -m power_of_choice.dataset_preparation alpha=<alpha>
 ```
-
-To generate partitions of the CIFAR10 dataset (used in Figure 6 of the paper), you can override the parameter:
-
-```bash
-python -m power_of_choice.dataset_preparation dataset.dataset="cifar10"
-```
-
-In this case the generated datasets will be saved in the `cifar10` folder.
 
 ### Running simulations and reproducing results
 If you have not done it yet, [generate the clients' dataset](#generate-clients-dataset).
