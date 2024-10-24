@@ -8,7 +8,7 @@ model is going to be evaluated, etc. At the end, this script saves the results.
 import os
 from typing import Dict, List, Optional, Tuple
 from utils import save_results_as_pickle
-from models import create_CNN_model, create_MLP_model
+from models import  create_MLP_model
 from client_rt import gen_client_fn
 import hydra
 import numpy as np
