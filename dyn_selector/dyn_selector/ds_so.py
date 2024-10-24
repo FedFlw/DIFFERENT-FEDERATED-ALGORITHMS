@@ -8,7 +8,7 @@ This script reproduces results using dynamic selector and static optimizer techn
 
 import os
 from typing import Dict, List, Optional, Tuple
-from models import create_MLP_model, create_CNN_model
+from models import create_MLP_model
 from flwr.common.typing import Metrics
 from utils import save_results_as_pickle
 from client import gen_client_fn
