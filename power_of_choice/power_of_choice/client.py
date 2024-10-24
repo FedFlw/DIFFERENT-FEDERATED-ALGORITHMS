@@ -1,5 +1,5 @@
 from typing import Callable
-from models import create_CNN_model, create_MLP_model
+from models import  create_MLP_model
 from dataset import load_dataset
 import flwr as fl
 import numpy as np
@@ -51,20 +51,17 @@ class FlwrClient(fl.client.NumPyClient):
         return loss, len(self.x_val), {"accuracy": acc}
 
 
-def gen_client_fn(is_cnn: bool = False) -> Callable[[str], fl.client.Client]:
-    """Create a function that generates clients with either CNN or MLP model."""
+def gen_client_fn() -> Callable[[str], fl.client.Client]:
+    """Create a function that generates clients."""
     def client_fn(cid: str) -> fl.client.Client:
         # Dynamically load the model based on the `is_cnn` flag
-        if is_cnn:
-            model = create_CNN_model()  # Use CNN model
-        else:
-            model = create_MLP_model()  # Use MLP model
+        model = create_MLP_model()  # Use MLP model
 
         # Compile the model
         model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
         # Load the client's dataset partition
-        (x_train_cid, y_train_cid) = load_dataset(cid, is_cnn)
+        (x_train_cid, y_train_cid) = load_dataset(cid)
 
         # Create and return the client
         return FlwrClient(model, x_train_cid, y_train_cid)
