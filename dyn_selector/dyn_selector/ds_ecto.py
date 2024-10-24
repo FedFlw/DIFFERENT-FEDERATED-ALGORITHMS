@@ -10,7 +10,7 @@ from typing import Dict, List, Optional, Tuple
 from flwr.common.typing import Metrics
 from utils import plot_dloss_from_history
 from utils import save_results_as_pickle
-from models import create_MLP_model, create_CNN_model
+from models import create_MLP_model
 from client_ecto import gen_client_fn
 import flwr as fl
 import numpy as np
