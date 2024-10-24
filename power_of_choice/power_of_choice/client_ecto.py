@@ -5,7 +5,6 @@ to instantiate your client.
 """
 
 from typing import Callable, Dict
-from models import create_CNN_model
 from models import create_MLP_model
 from dataset import load_dataset
 from flwr.common import Config, Scalar
@@ -97,7 +96,7 @@ class FlwrClient(fl.client.NumPyClient):
         return loss, len(self.x_val), {"accuracy": acc}
 
 
-def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config: Dict[str, float], default_config: Dict[str, float], comp_time: int, samples_per_client: int, is_cnn: bool = False) -> Callable[[str], fl.client.Client]:
+def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config: Dict[str, float], default_config: Dict[str, float], comp_time: int, samples_per_client: int) -> Callable[[str], fl.client.Client]:
 
     # Generate num_clients random ips from uniform distribution
     ips_min = ips_mean - ips_var
@@ -117,7 +116,7 @@ def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config:
     if varying_config["local_epochs"]:
         batch_size = default_config["batch_size"]
         fraction_samples = default_config["fraction_samples"]
-        (x_train_cid, _) = load_dataset(cid, is_cnn)
+        (x_train_cid, _) = load_dataset(cid)
         samples_per_client = len(x_train_cid)
         num_samples = round(samples_per_client * fraction_samples)
         for cid, local_iteration in local_iterations.items():
@@ -131,7 +130,7 @@ def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config:
     elif varying_config["batch_size"]:
         local_epochs = default_config["local_epochs"]
         fraction_samples = default_config["fraction_samples"]
-        (x_train_cid, _) = load_dataset(cid, is_cnn)
+        (x_train_cid, _) = load_dataset(cid)
         samples_per_client = len(x_train_cid)
         num_samples = round(samples_per_client * fraction_samples)
         for cid, local_iteration in local_iterations.items():
@@ -146,7 +145,7 @@ def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config:
         local_epochs = default_config["local_epochs"]
         batch_size = default_config["batch_size"]
         for cid, local_iteration in local_iterations.items():
-            (x_train_cid, _) = load_dataset(cid, is_cnn)
+            (x_train_cid, _) = load_dataset(cid)
             samples_per_client = len(x_train_cid)
             num_samples = max(1, int((local_iteration * batch_size) / local_epochs))
             if samples_per_client == 0:
@@ -163,10 +162,7 @@ def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config:
 
     def client_fn(cid: str) -> fl.client.Client:
         # Load model
-        if(is_cnn):
-            model = create_CNN_model()
-        else:
-            model = create_MLP_model()
+        model = create_MLP_model()
         
         model.compile("sgd", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
@@ -177,7 +173,7 @@ def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config:
         ips = ips_dict[cid]
 
         # Load data partition (divide MNIST into NUM_CLIENTS distinct partitions)
-        (x_train_cid, y_train_cid) = load_dataset(cid, is_cnn)
+        (x_train_cid, y_train_cid) = load_dataset(cid)
 
         # Create and return client
         return FlwrClient(model, x_train_cid, y_train_cid, ips, config)
