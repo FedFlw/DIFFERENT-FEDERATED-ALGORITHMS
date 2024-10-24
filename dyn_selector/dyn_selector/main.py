@@ -4,7 +4,7 @@ from flwr.common.typing import Metrics
 from utils import save_results_as_pickle
 import numpy as np
 from client_uo import gen_client_fn
-from models import create_MLP_model, create_CNN_model
+from models import create_MLP_model
 import hydra
 from hydra.utils import instantiate
 import flwr as fl
@@ -25,8 +25,8 @@ def main(cfg: DictConfig) -> None:
     client_fn = gen_client_fn((cfg.epochs_min, cfg.epochs_max), 
                               (cfg.fraction_samples_min, cfg.fraction_samples_max), 
                               (cfg.batch_size_min, cfg.batch_size_max), 
-                              cfg.num_clients, 
-                              cfg.is_cnn)
+                              cfg.num_clients
+                              )
     
     def get_fit_metrics_aggregation_fn():
         def fit_metrics_aggregation_fn(results: List[Tuple[int, Metrics]]) -> Metrics:
@@ -63,10 +63,7 @@ def main(cfg: DictConfig) -> None:
 
         return evaluate
     
-    if cfg.is_cnn:
-        server_model = create_CNN_model()
-    else:
-        server_model = create_MLP_model()
+    server_model = create_MLP_model()
 
     server_model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
