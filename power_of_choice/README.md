@@ -2,25 +2,25 @@
 
 **Authors:** XXXX-1, XXXX-2 and XXXX-3
 
-**Abstract:** The rise of machine learning—fueled by open datasets, affordable processing, and cost-effective storage—has accelerated model development across various applications, from computer vision to natural language processing. Federated learning (FL) is a technique to train multiple individual models that are progressively aggregated by a central server. This approach maintains data privacy, while deriving collective knowledge from the distributed user data.
-However, FL introduces complexities such as statistical and system heterogeneity, requiring innovative algorithms for convergence in non-IID datasets and performance optimization of the FL system. Despite the presence of different solutions to address statistical and system heterogeneity in FL, they often lack a proper evaluation and
-comparison. This work proposes an evaluation methodology for analysis and comparison of dynamic client selection and resource-aware workload allocation techniques, two promising directions to address the problem of heterogeneity in FL. We include an experimental phase to assess the performance and impact of these algorithms compared to baseline techniques, by considering different datasets, model architectures, and degrees of heterogeneity in the training data. The results showcase the competitiveness of the proposed strategies, particularly in heterogeneous settings, providing insights on their effectiveness, convergence speed, and stability. Finally, we discuss and highlight the importance of strategic client selection and workload distribution for effective and stable model training in FL environments. By implementing our solution in Flower, a flexible user-friendly FL framework, we prioritize reproducibility and extensibility of the experiments, two crucial properties for advancing research in FL.
-
+**Abstract:** Federated machine learning, often referred to as Federated Learning (FL), is a convenient way to distribute machine learning on different nodes. FL saves bandwidth and keeps data privacy, but requires dedicated solutions to manage
+heterogeneity —as for both managed data and selected peers to obtain convergent and robust models. This paper explores
+various techniques for node selection, including random selection (as implemented in FedAvg), dynamic sampling, and the Power
+of Choice along with its two variants. It also examines different workload optimizers such as the Static Optimizer, Uniform Optimizer, Round Time Optimizer, and Equal Computation Time Optimizer. In addition to implementing them in Flower, a flexible user-friendly FL framework, we carried out a careful evaluation to analyze and compare them. We evaluated the performance and impact of these algorithms compared to baseline techniques on MNIST data set and an MLP model and with different degrees of heterogeneity in the setting. The results obtained provide interesting insights on their effectiveness, convergence speed, and stability. The goal is also to encourage the community to extend the experiments and play with different strategies, features, and characteristics.
 
 ## About the experiments
 
 ****Datasets:**** MNIST, from Keras
 
-****Hardware Setup:**** These experiments were run on a desktop machine with 10 CPU threads. Any machine with 4 CPU cores or more would be able to run it in a reasonable amount of time. Note: the entire experiment runs on CPU-only mode.
+****Hardware Setup:**** These experiments were run on a desktop machine with 8 CPU threads. Any machine with 4 CPU cores or more would be able to run it in a reasonable amount of time. Note: the entire experiment runs on CPU-only mode.
 
 
 ## Experimental Setup
 
 ****Model:**** This directory implements the model:
-* A Multi Layer Perceptron (MLP) used in the paper on MNIST. 
+* A Multi-Layer Perceptron (MLP) used in the paper on MNIST. 
 This is the model used by default.
 
-****Dataset:**** The experiments include  dataset: MINST (MNIST) 0. which is partitioned by default among 100 clients, creating imbalanced non-iid partitions using Latent Dirichlet Allocation (LDA) without resampling. All the clients have the same number of samples. Parameter `alpha` of the LDA can be set in the `base.yaml` or passed as argument, by default it is set to 2.
+****Dataset:**** The experiments include  dataset: MINST (MNIST). which is partitioned by default among 100 clients, creating imbalanced non-iid partitions using Latent Dirichlet Allocation (LDA) without resampling. All the clients have the same number of samples. Parameter `alpha` of the LDA can be set in the `base.yaml` or passed as argument, by default it is set to 2.
 
 | Dataset | #classes | #partitions | partitioning method | partition settings |
 | :------ | :---: | :---: | :---: | :---: |
