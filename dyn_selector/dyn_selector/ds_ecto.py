@@ -68,7 +68,7 @@ def main(cfg: DictConfig) -> None:
 
     samples_per_client = total_num_samples / cfg.num_clients
 
-    client_fn = gen_client_fn(cfg.client.mean_ips, cfg.client.var_ips, cfg.num_clients, varying_config, default_config, cfg.comp_time, samples_per_client, cfg.is_cnn)
+    client_fn = gen_client_fn(cfg.client.mean_ips, cfg.client.var_ips, cfg.num_clients, varying_config, default_config, cfg.comp_time, samples_per_client)
     
     def get_fit_metrics_aggregation_fn():
         def fit_metrics_aggregation_fn(results: List[Tuple[int, Metrics]]) -> Metrics:
