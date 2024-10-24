@@ -100,10 +100,7 @@ def main(cfg: DictConfig) -> None:
 
         return evaluate
     
-    if cfg.is_cnn:
-        server_model = create_CNN_model()
-    else:
-        server_model = create_MLP_model()
+    server_model = create_MLP_model()
     
     server_model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
