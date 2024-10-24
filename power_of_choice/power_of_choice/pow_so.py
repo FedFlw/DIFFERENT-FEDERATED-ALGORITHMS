@@ -14,7 +14,7 @@ from flwr.common.typing import Metrics
 from flwr.server.server import Server
 from flwr.server.strategy.fedavg import FedAvg
 from server import PowerOfChoiceCommAndCompVariant
-from models import create_MLP_model, create_CNN_model
+from models import create_MLP_model
 from utils import save_results_as_pickle
 from server import PowerOfChoiceServer
 from client import gen_client_fn
@@ -171,10 +171,7 @@ def main(cfg: DictConfig) -> None:
 
         return evaluate
     
-    if cfg.is_cnn:
-        server_model = create_CNN_model()
-    else:
-        server_model = create_MLP_model()
+    server_model = create_MLP_model()
     
     server_model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
