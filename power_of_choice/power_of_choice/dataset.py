@@ -32,9 +32,7 @@ def load_dataset(cid: str, is_cnn: bool = False) -> Tuple[np.ndarray, np.ndarray
         A tuple containing the train set for a given client.
     """
     folder = "mnist"
-    if is_cnn:
-        folder = "cifar10"
-
+    
     loaded_ds = tf.data.experimental.load(
         path=os.path.join(folder, cid),
         element_spec=None,
