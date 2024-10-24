@@ -1,5 +1,5 @@
 from typing import Callable
-from models import create_CNN_model, create_MLP_model
+from models import create_MLP_model
 import tensorflow as tf
 import flwr as fl
 import numpy as np
@@ -71,7 +71,7 @@ def gen_client_fn(fds) -> Callable[[str], fl.client.Client]:
     
     def client_fn(cid: str) -> fl.client.Client:
         # Load dataset partition for this client using the FederatedDataset (fds)
-        (x_train_cid, y_train_cid) = load_dataset(cid, is_cnn)
+        (x_train_cid, y_train_cid) = load_dataset(cid)
 
         if x_train_cid is None or y_train_cid is None:
             raise ValueError(f"Dataset for client {cid} not loaded correctly.")
@@ -79,8 +79,8 @@ def gen_client_fn(fds) -> Callable[[str], fl.client.Client]:
         # Print dataset shape for debugging
         print(f"Client {cid} loaded data: x_train={x_train_cid.shape}, y_train={y_train_cid.shape}")
 
-        # Create the model (you can choose CNN or MLP based on some logic or config if needed)
-        model = create_MLP_model()  # Modify if CNN is required
+        # Create the model 
+        model = create_MLP_model()  
 
         # Compile the model
         model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"], run_eagerly=True)
