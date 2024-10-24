@@ -13,11 +13,11 @@ import tensorflow as tf
 from flwr.common import Config, Scalar
 
 from power_of_choice.dataset import load_dataset
-from power_of_choice.models import create_CNN_model, create_MLP_model
+from power_of_choice.models import  create_MLP_model
 
 
 class FlwrClient(fl.client.NumPyClient):
-    """Standard Flower client for MLP or CNN training."""
+    """Standard Flower client ."""
 
     def __init__(self, model, x_train, y_train, ips) -> None:
         super().__init__()
@@ -146,17 +146,14 @@ def gen_client_fn(ips_mean, ips_var, num_clients, is_cnn: bool = False) -> Calla
     def client_fn(cid: str) -> fl.client.Client:
         """Create a Flower client."""
         # Load model
-        if is_cnn:
-            model = create_CNN_model()
-        else:
-            model = create_MLP_model()
+        model = create_MLP_model()
 
         model.compile("sgd", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
         ips = ips_dict[cid]
 
         # Load data partition (divide MNIST into NUM_CLIENTS distinct partitions)
-        (x_train_cid, y_train_cid) = load_dataset(cid, is_cnn)
+        (x_train_cid, y_train_cid) = load_dataset(cid)
 
         # Create and return client
         return FlwrClient(model, x_train_cid, y_train_cid, ips)
