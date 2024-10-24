@@ -14,7 +14,7 @@ from flwr.common.typing import Metrics
 from flwr.server.server import Server
 from flwr.server.strategy.fedavg import FedAvg
 from server import PowerOfChoiceCommAndCompVariant
-from models import create_MLP_model, create_CNN_model
+from models import create_MLP_model
 from flwr.common.typing import Scalar
 from utils import plot_metric_from_history, save_results_as_pickle
 from server import PowerOfChoiceServer
@@ -55,8 +55,8 @@ def main(cfg: DictConfig) -> None:
                             (cfg.epochs_min, cfg.epochs_max), 
                             (cfg.fraction_samples_min, cfg.fraction_samples_max), 
                             (cfg.batch_size_min, cfg.batch_size_max), 
-                            cfg.num_clients, 
-                            cfg.is_cnn)
+                            cfg.num_clients
+                            )
 
     # 4. Define your strategy
     # pass all relevant argument (including the global dataset used after aggregation,
@@ -158,9 +158,7 @@ def main(cfg: DictConfig) -> None:
         print(f"Current folder is {os.getcwd()}")
 
         test_folder = "mnist"
-        if cfg.is_cnn:
-            test_folder = "cifar10"
-
+        
         # Load data and model here to avoid the overhead of doing it in `evaluate` itself
         x_test = np.load(os.path.join(test_folder, "x_test.npy"))
         y_test = np.load(os.path.join(test_folder, "y_test.npy"))
