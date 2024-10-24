@@ -5,7 +5,6 @@ to instantiate your client.
 """
 
 from typing import Callable, Dict, Tuple
-from models import create_CNN_model
 from models import create_MLP_model
 from dataset import load_dataset
 from flwr.common import Config, Scalar
@@ -96,7 +95,7 @@ class FlwrClient(fl.client.NumPyClient):
         return loss, len(self.x_val), {"accuracy": acc}
 
 
-def gen_client_fn(ips_mean: int, ips_var: int, epochs: Tuple[int, int], fraction_samples: Tuple[int, int], batch_size: Tuple[int, int], num_clients: int, is_cnn: bool = False) -> Callable[[str], fl.client.Client]:
+def gen_client_fn(ips_mean: int, ips_var: int, epochs: Tuple[int, int], fraction_samples: Tuple[int, int], batch_size: Tuple[int, int], num_clients: int) -> Callable[[str], fl.client.Client]:
 
     # Generate num_clients random ips from uniform distribution
     ips_min = ips_mean - ips_var
@@ -135,10 +134,7 @@ def gen_client_fn(ips_mean: int, ips_var: int, epochs: Tuple[int, int], fraction
 
     def client_fn(cid: str) -> fl.client.Client:
         # Load model
-        if(is_cnn):
-            model = create_CNN_model()
-        else:
-            model = create_MLP_model()
+        model = create_MLP_model()
         
         model.compile("sgd", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
