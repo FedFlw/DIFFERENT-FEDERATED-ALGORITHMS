@@ -44,7 +44,7 @@ def main(cfg: DictConfig) -> None:
     # be a location in the file system, a list of dataloader, a list of ids to extract
     # from a dataset, it's up to you)
 
-    client_fn = gen_client_fn(cfg.is_cnn)
+    client_fn = gen_client_fn()
 
     # 4. Define your strategy
     # pass all relevant argument (including the global dataset used after aggregation,
@@ -128,10 +128,7 @@ def main(cfg: DictConfig) -> None:
 
         return evaluate
     
-    if cfg.is_cnn:
-        server_model = create_CNN_model()
-    else:
-        server_model = create_MLP_model()
+    server_model = create_MLP_model()
     
     server_model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
     
