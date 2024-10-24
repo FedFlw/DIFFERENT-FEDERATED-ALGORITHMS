@@ -24,7 +24,7 @@ from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 
 from power_of_choice.client import gen_client_fn
-from power_of_choice.models import create_CNN_model, create_MLP_model
+from power_of_choice.models import  create_MLP_model
 from power_of_choice.server import PowerOfChoiceCommAndCompVariant, PowerOfChoiceServer
 from power_of_choice.utils import save_results_as_pickle
 
@@ -54,7 +54,7 @@ def main(cfg: DictConfig) -> None:
     # 3. Define your clients
     # Define a function that returns another function that will be used during
     # simulation to instantiate each individual client
-    client_fn = gen_client_fn(cfg.is_cnn)
+    client_fn = gen_client_fn()
 
     # 4. Define your strategy
     # pass all relevant argument (including the global dataset used after aggregation,
@@ -155,9 +155,7 @@ def main(cfg: DictConfig) -> None:
         print(f"Current folder is {os.getcwd()}")
 
         test_folder = "mnist"
-        if cfg.is_cnn:
-            test_folder = "cifar10"
-
+        
         # Load data and model here to avoid the overhead of doing it in `evaluate`
         x_test = np.load(os.path.join(test_folder, "x_test.npy"))
         y_test = np.load(os.path.join(test_folder, "y_test.npy"))
@@ -174,10 +172,7 @@ def main(cfg: DictConfig) -> None:
 
         return evaluate
 
-    if cfg.is_cnn:
-        server_model = create_CNN_model()
-    else:
-        server_model = create_MLP_model()
+    server_model = create_MLP_model()
 
     server_model.compile(
         "adam", "sparse_categorical_crossentropy", metrics=["accuracy"]
