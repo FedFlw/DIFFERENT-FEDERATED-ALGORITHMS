@@ -111,10 +111,8 @@ def gen_client_fn(ips_mean: int, ips_var: int, num_clients: int, varying_config:
     def client_fn(cid: str) -> fl.client.Client:
 
         # Load model
-        if(is_cnn):
-            model = create_CNN_model()
-        else:
-            model = create_MLP_model()
+        
+        model = create_MLP_model()
         
         model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
